@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,6 +9,15 @@ import (
 
 	"github.com/joho/godotenv"
 )
+
+type ApiResponse struct {
+  Current struct {
+    Tempe float64 `json:"temp_c"`
+    Condition struct {
+      Text string `json:"text"`
+    } `json:"conditon"`
+  } `json:"current"`
+}
 
 func main() {
 	godotenv.Load()
@@ -21,5 +31,14 @@ func main() {
   } else {
     fmt.Println(resp)
   }
+
   defer resp.Body.Close()
+
+  var weather ApiResponse
+  if err := json.NewDecoder(resp.Body).Decode(&weather); err != nil {
+    fmt.Println("Error idk man")
+    return
+  }
+
+  fmt.Printf("%.1fC, %s\n", weather.Current.Tempe, weather.Current.Condition.Text)
 }
