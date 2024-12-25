@@ -9,10 +9,11 @@ import (
 
 	"github.com/joho/godotenv"
 )
-
+// TODO: loop to call API and update the weather
+// TODO: add icon for weather condition --> condition:icon
 type ApiResponse struct {
   Current struct {
-    Tempe float64 `json:"temp_c"`
+    Temperature float64 `json:"temp_c"`
     Condition struct {
       Text string `json:"text"`
     } `json:"conditon"`
@@ -43,5 +44,5 @@ func main() {
     return
   }
 
-  fmt.Printf("%.1fC\n", weather.Current.Tempe)
+  fmt.Printf("%.1f°C\n", weather.Current.Temperature)
 }
