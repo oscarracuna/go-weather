@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"time"
 
-	"github.com/joho/godotenv"
+	//"github.com/joho/godotenv" gotta hardcode the API key otherwise my programlol
+  // won't run when I move it to /bin/ lol
 )
 
-// TODO: loop to call API and update the weather
 // TODO: add icon for weather condition --> condition:icon
 type ApiResponse struct {
 	Current struct {
@@ -25,26 +23,11 @@ type ApiResponse struct {
 func main() {
 	initialResp := getResponse()
 	fmt.Printf("%.1f°C\n", initialResp)
-	go tickers()
-	time.Sleep(time.Second * 86400)
 }
 
-func tickers() {
-	for range time.Tick(time.Second * 120) {
-		resp := getResponse()
-		fmt.Printf("%.1f°C\n", resp)
-		currentTime := time.Now()
-		formattedTime := currentTime.Format("Jan 02, 2006 3:04 PM")
-		fmt.Println("Current time:", formattedTime)
-	}
-}
-
-// TODO: find a way to handle errors here
-// func that returns an erro and then stops the time.Sleep()
 func getResponse() float64 {
-	godotenv.Load()
-	api_key := os.Getenv("API_KEY")
-	city := "El%20Paso"
+  api_key := "API Key goes here"
+  city := "El%20Paso"
 	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", api_key, city)
 
 	resp, err := http.Get(url)
